@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkiteditor\\public\\livestreamingtoolkiteditorstyle.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\debuggame\\unrealed\\sharedpch.unrealed.nonoptimized.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\livestreamingtoolkiteditor\\definitions.livestreamingtoolkiteditor.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestyle.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\brushes\\slateborderbrush.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\brushes\\slateboxbrush.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\brushes\\slatecolorbrush.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\brushes\\slateroundedboxbrush.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\slatecore\\public\\brushes\\slateimagebrush.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

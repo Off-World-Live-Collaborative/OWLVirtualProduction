@@ -1,0 +1,115 @@
+{
+  "$schema": "https://raw.githubusercontent.com/spdx/spdx-spec/v2.2.1/schemas/spdx-schema.json",
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "documentNamespace": "https://spdx.org/spdxdocs/amd-amf-x64-windows-1.4.26-54b6500c-d1d7-43ba-b449-d23f788bd091",
+  "name": "amd-amf:x64-windows@1.4.26 b97f9369be2c6d3288bb70e2afe2223e5c67ce7ee4a592cd8d1f9d5c72bced28",
+  "creationInfo": {
+    "creators": [
+      "Tool: vcpkg-105f7f7e8a5ea10dfac9874ff9d1a6bacba5f454"
+    ],
+    "created": "2023-03-28T08:49:50Z"
+  },
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "GENERATES",
+      "relatedSpdxElement": "SPDXRef-binary"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-0"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-file-1"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "GENERATED_FROM",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-0",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "CONTAINED_BY",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "DEPENDENCY_MANIFEST_OF",
+      "relatedSpdxElement": "SPDXRef-port"
+    }
+  ],
+  "packages": [
+    {
+      "name": "amd-amf",
+      "SPDXID": "SPDXRef-port",
+      "versionInfo": "1.4.26",
+      "downloadLocation": "git+https://github.com/Microsoft/vcpkg#ports/amd-amf",
+      "homepage": "https://github.com/GPUOpen-LibrariesAndSDKs/AMF",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "description": "AMD Advanced Media Framework headers",
+      "comment": "This is the port (recipe) consumed by vcpkg."
+    },
+    {
+      "name": "amd-amf:x64-windows",
+      "SPDXID": "SPDXRef-binary",
+      "versionInfo": "b97f9369be2c6d3288bb70e2afe2223e5c67ce7ee4a592cd8d1f9d5c72bced28",
+      "downloadLocation": "NONE",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "This is a binary package built by vcpkg."
+    },
+    {
+      "SPDXID": "SPDXRef-resource-1",
+      "name": "GPUOpen-LibrariesAndSDKs/AMF",
+      "downloadLocation": "git+https://github.com/GPUOpen-LibrariesAndSDKs/AMF@v1.4.26",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2c931ef7d38ade88a96041e0012605a5d25ec484bb2134f58310cf1a2c7212a869797cef99e2e751c8a6b3c473ba1f8762d4a5d41466d38cb5e31bf664a25f55"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "fileName": "./portfile.cmake",
+      "SPDXID": "SPDXRef-file-0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8bcf39a730ec3cd3a50301c77508189ff3076bfa77aa0fb2064714c75101aefe"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./vcpkg.json",
+      "SPDXID": "SPDXRef-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "989c6f3815ac7b5e2c7dc8809252c03936986ddbe63c0c615b3b617587224a07"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\unrealeditor\\inc\\owlscreencapture\\uht\\owlscreencaptureroptions.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\owlscreencapture\\definitions.owlscreencapture.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\owlscreencapture\\public\\owlscreencaptureroptions.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\unrealeditor\\inc\\owlscreencapture\\uht\\owlscreencaptureroptions.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,20 @@
+name: Bug Report
+description: Create a report to help us improve this application
+labels: [Bug, Needs Triage]
+body:
+  - type: textarea
+    id: stepstorecreate
+    attributes:
+      label: Describes the steps to recreate
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: What version / commit is this bug present in
+    validations:
+      required: true
+  - type: textarea
+    id: logoutput
+    attributes:
+      label: Paste any relevant log output from the unreal console

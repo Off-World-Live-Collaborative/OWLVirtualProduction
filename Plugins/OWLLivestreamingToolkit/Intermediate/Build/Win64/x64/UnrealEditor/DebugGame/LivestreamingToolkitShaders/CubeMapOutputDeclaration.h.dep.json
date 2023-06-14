@@ -1,0 +1,18 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkitshaders\\private\\camera360\\cubemapoutputdeclaration.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\debuggame\\engine\\sharedpch.engine.nonoptimized.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\livestreamingtoolkitshaders\\definitions.livestreamingtoolkitshaders.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget2d.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget2d.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\rhi\\public\\datadrivenshaderplatforminfo.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

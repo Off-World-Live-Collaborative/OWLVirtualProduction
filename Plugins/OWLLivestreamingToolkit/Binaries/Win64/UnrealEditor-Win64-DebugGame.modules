@@ -1,0 +1,17 @@
+{
+	"BuildId": "25360045",
+	"Modules": 
+	{
+		"LivestreamingToolkit": "UnrealEditor-LivestreamingToolkit-Win64-DebugGame.dll",
+		"LivestreamingToolkitEditor": "UnrealEditor-LivestreamingToolkitEditor-Win64-DebugGame.dll",
+		"LivestreamingToolkitShaders": "UnrealEditor-LivestreamingToolkitShaders-Win64-DebugGame.dll",
+		"OWL360Camera": "UnrealEditor-OWL360Camera-Win64-DebugGame.dll",
+		"OWLCamera": "UnrealEditor-OWLCamera-Win64-DebugGame.dll",
+		"OWLComposure": "UnrealEditor-OWLComposure-Win64-DebugGame.dll",
+		"OWLMedia": "UnrealEditor-OWLMedia-Win64-DebugGame.dll",
+		"OWLNDI": "UnrealEditor-OWLNDI-Win64-DebugGame.dll",
+		"OWLScreenCapture": "UnrealEditor-OWLScreenCapture-Win64-DebugGame.dll",
+		"OWLSpout": "UnrealEditor-OWLSpout-Win64-DebugGame.dll",
+		"OWLVirtualWebcam": "UnrealEditor-OWLVirtualWebcam-Win64-DebugGame.dll"
+	}
+}

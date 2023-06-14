@@ -1,0 +1,12 @@
+{
+	"OutputFiles": [
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCapture.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCapture.init.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCapturerOptions.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\FScreenCaptureHelpers.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCapture.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCaptureModule.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\OWLScreenCapturer.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Development\\OWLScreenCapture\\WinRTCapture.cpp.obj"
+	]
+}

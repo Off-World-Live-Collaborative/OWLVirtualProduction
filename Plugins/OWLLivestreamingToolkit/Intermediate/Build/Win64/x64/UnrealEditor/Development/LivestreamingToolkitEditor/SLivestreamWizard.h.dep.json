@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkiteditor\\public\\slivestreamwizard.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\unrealed\\sharedpch.unrealed.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livestreamingtoolkiteditor\\definitions.livestreamingtoolkiteditor.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

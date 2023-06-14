@@ -1,0 +1,12 @@
+{
+	"OutputFiles": [
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCapture.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCapture.init.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCapturerOptions.gen.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\FScreenCaptureHelpers.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCapture.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCaptureModule.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\OWLScreenCapturer.cpp.obj",
+		"..\\..\\..\\x64\\UnrealGame\\Shipping\\OWLScreenCapture\\WinRTCapture.cpp.obj"
+	]
+}

@@ -1,0 +1,25 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkit\\private\\serverauth\\authcoordinator.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\unrealed\\sharedpch.unrealed.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livestreamingtoolkit\\definitions.livestreamingtoolkit.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkit\\private\\serverauth\\authdelegates.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkit\\private\\serverauth\\authsharedsettings.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\dom\\jsonobject.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\dom\\jsonvalue.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\serialization\\jsontypes.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\jsonglobals.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkit\\public\\tools\\owljsonhelper.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\core\\public\\misc\\filehelper.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\policies\\condensedjsonprintpolicy.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\serialization\\jsonwriter.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\serialization\\jsonserializer.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\serialization\\jsonreader.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

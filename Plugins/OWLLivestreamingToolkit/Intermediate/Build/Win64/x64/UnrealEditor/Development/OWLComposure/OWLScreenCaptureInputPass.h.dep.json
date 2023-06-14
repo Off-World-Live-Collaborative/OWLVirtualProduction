@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\owlcomposure\\public\\owlscreencaptureinputpass.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\owlcomposure\\definitions.owlcomposure.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\plugins\\compositing\\composure\\source\\composure\\classes\\compositingelements\\compositingelementpasses.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\plugins\\compositing\\composure\\source\\composure\\public\\compositingelements\\inheritedcompositingtargetpool.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget2d.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget2d.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\plugins\\compositing\\composure\\intermediate\\build\\win64\\unrealeditor\\inc\\composure\\uht\\compositingelementpasses.generated.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\owlscreencapture\\public\\owlscreencaptureroptions.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\unrealeditor\\inc\\owlscreencapture\\uht\\owlscreencaptureroptions.generated.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\unrealeditor\\inc\\owlcomposure\\uht\\owlscreencaptureinputpass.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,37 @@
+// Copyright Off World Live Limited, 2020-2022. All rights reserved.
+
+#include "/Engine/Private/Common.ush"
+#include "/Engine/Private/GammaCorrectionCommon.ush"
+
+#ifndef CONVERT_SRGB_TO_LINEAR
+#define CONVERT_SRGB_TO_LINEAR false
+#endif
+
+
+Texture2D InputTexture;
+SamplerState InputSampler;
+int DoubleSRGBConversion;
+
+void LinearToSrgbPS(
+	noperspective float4 UVAndScreenPos : TEXCOORD0,
+	out float4 OutColor : SV_Target0)
+{
+	float2 UV = UVAndScreenPos.xy;
+	float4 RGBA = InputTexture.Sample(InputSampler, UV);
+	float3 LinearRGB = LinearToSrgb(RGBA.xyz);
+	OutColor = float4(LinearRGB, RGBA.a);
+}
+
+void InputTextureConvertPS(
+	noperspective float4 UVAndScreenPos : TEXCOORD0,
+	out float4 OutColor : SV_Target0)
+{
+	float2 UV = UVAndScreenPos.xy;
+	float4 RGBA = InputTexture.Sample(InputSampler, UV);
+#if CONVERT_SRGB_TO_LINEAR
+	float3 SRGB = DoubleSRGBConversion == 1 ? sRGBToLinear(sRGBToLinear(RGBA.rgb)) : sRGBToLinear(RGBA.rgb);
+	OutColor = float4(SRGB, RGBA.a);
+#else
+	OutColor = RGBA;
+#endif
+}

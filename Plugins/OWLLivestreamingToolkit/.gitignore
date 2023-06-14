@@ -1,0 +1,11 @@
+!Binaries/**/*
+!Binaries/**/*.dll
+!Binaries/**/*.lib
+!Intermediate/**/*
+!Intermediate
+!Source/ThirdParty
+!Source/ThirdParty/**/*.dll
+!Source/ThirdParty/**/*.lib
+!Source/ThirdParty/**/*.exe
+!Utils/*.exe
+!Utils

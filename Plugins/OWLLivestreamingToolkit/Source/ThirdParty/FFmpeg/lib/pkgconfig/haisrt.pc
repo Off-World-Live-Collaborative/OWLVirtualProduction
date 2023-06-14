@@ -1,0 +1,13 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: srt
+Description: SRT library set
+Version: 1.5.0
+Libs: "-L${libdir}" -lsrt
+Libs.private:  ws2_32.lib
+Cflags: "-I${includedir}" "-I${includedir}/srt"
+Requires.private: openssl libcrypto
+

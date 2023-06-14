@@ -1,0 +1,17 @@
+{
+	"BuildId": "25360045",
+	"Modules": 
+	{
+		"LivestreamingToolkit": "UnrealEditor-LivestreamingToolkit.dll",
+		"LivestreamingToolkitEditor": "UnrealEditor-LivestreamingToolkitEditor.dll",
+		"LivestreamingToolkitShaders": "UnrealEditor-LivestreamingToolkitShaders.dll",
+		"OWL360Camera": "UnrealEditor-OWL360Camera.dll",
+		"OWLCamera": "UnrealEditor-OWLCamera.dll",
+		"OWLComposure": "UnrealEditor-OWLComposure.dll",
+		"OWLMedia": "UnrealEditor-OWLMedia.dll",
+		"OWLNDI": "UnrealEditor-OWLNDI.dll",
+		"OWLScreenCapture": "UnrealEditor-OWLScreenCapture.dll",
+		"OWLSpout": "UnrealEditor-OWLSpout.dll",
+		"OWLVirtualWebcam": "UnrealEditor-OWLVirtualWebcam.dll"
+	}
+}

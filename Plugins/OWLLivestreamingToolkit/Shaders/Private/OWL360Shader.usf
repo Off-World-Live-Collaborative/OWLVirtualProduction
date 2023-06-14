@@ -1,0 +1,575 @@
+
+#include "/Engine/Public/Platform.ush"
+#include "/Engine/Private/Common.ush"
+
+static const float PIH = PI / 2.;
+static const float TWOPI = PI * 2.;
+static const float THIRD = 0.333333333333;
+
+#define RIGHT_FACE (0)
+#define LEFT_FACE (1)
+#define UP_FACE (2)
+#define DOWN_FACE (3)
+#define FRONT_FACE (4)
+#define BACK_FACE (5)
+#ifndef NEEDS_ADDITIVE
+#define NEEDS_ADDITIVE false
+
+#endif
+
+//////////////PARAMS//////////////////////
+
+Texture2D RightFace;
+Texture2D LeftFace;
+Texture2D UpFace;
+Texture2D DownFace;
+Texture2D FrontFace;
+Texture2D BackFace;
+
+// Equi params
+
+Texture2D EquiTexture;
+SamplerState BilinearTextureSampler;
+
+// first pass only params:
+float BloomThreshold;
+
+// All Bloom
+float2 BlurDirection;
+
+static const int MAX_NUM_SAMPLES = 128;
+float4 SampleOffsets[(MAX_NUM_SAMPLES + 1) / 2];
+float4 SampleWeights[MAX_NUM_SAMPLES];
+int SampleCount;
+
+#if HAS_USER_BLEED_PERCENT
+float BleedPercent;
+#else
+static const float BleedPercent = 1.01;
+#endif
+
+#if NEEDS_ADDITIVE
+// Blur Vertical pass only
+Texture2D VerticalOnlyEquiTexture;
+#endif
+
+// last pass only params:
+Texture2D RightOriginal;
+Texture2D LeftOriginal;
+Texture2D UpOriginal;
+Texture2D DownOriginal;
+Texture2D FrontOriginal;
+Texture2D BackOriginal;
+
+float BloomIntensity;
+int InvertAlpha;
+
+// dome params
+float Angle;
+float3x3 DomeRotMat;
+
+// mirror dome params
+// focal length = 1 - cos((360 - totalAngle) /2) -- only needs to be calculated once
+float MD_FocalLength;
+float3 MD_RayOffset;
+float3 MD_RayForward;
+float3 MD_RayRight;
+float3 MD_RayUp;
+float MD_PixelAspectRatio;
+
+
+//////////////////////////////////////////////////////////////////////////
+
+// find relavent angle
+// convert uv from -1 to 1 range to 0-1 range
+float2 recenterUV(float2 raw)
+{
+    float2 adjustedInput = raw / BleedPercent;
+    return ((adjustedInput + 1.) / 2.);
+}
+
+float3 unitVector(float3 i)
+{
+    return i / sqrt(i.x*i.x + i.y*i.y + i.z*i.z);
+}
+
+//////////////////////// Gaussian Blur Helpers
+
+// Returns the normalized 3D vector from phi and theta
+float3 PhiThetaToVector(float phi, float theta) {
+    return unitVector(float3(
+        cos(theta) * cos(phi),
+        cos(theta) * sin(phi),
+        sin(theta)
+    ));
+}
+
+float2 VectorToPhiTheta(float3 v) {
+    return float2(atan2(v.x, v.y), asin(v.z));
+}
+
+// Use haversines to calculate offset
+// Modified version of http://www.movable-type.co.uk/scripts/latlong.html
+float2 HaversineDestination(float2 origin, float d, float bearing)
+{
+    float theta = asin(
+        sin(origin.y)*cos(d) +
+        cos(origin.y)*sin(d)*cos(bearing)
+    );
+    float phi = origin.x + atan2(
+        sin(bearing)*sin(d)*cos(origin.y),
+        cos(d) - sin(origin.y)*sin(theta)
+    );
+    return float2(phi, theta);
+}
+
+
+half4 SampleCube(float3 p)
+{
+
+    float greatest = max(abs(p.x), max(abs(p.y), abs(p.z)));
+
+    float3 deNorm = p * (1. / greatest);
+
+    float faceVector[6] =
+    {
+        p.x,
+        -p.x,
+        p.z,
+        -p.z,
+        p.y,
+        -p.y,
+    };
+
+    float2 uvRange[6] =
+    {
+        float2(-deNorm.y, -deNorm.z),
+        float2(deNorm.y, -deNorm.z),
+        float2(deNorm.x, deNorm.y),
+        float2(deNorm.x, -deNorm.y),
+        float2(deNorm.x, -deNorm.z),
+        float2(-deNorm.x, -deNorm.z),
+    };
+
+    int faceNumber = 0;
+    float2 uv = float2(0., 0.);
+    // Iterate through each of the faces
+    // and detect where the vector is pointing at
+    // by identifying the greatest coordinate in that vector
+    for (int i = 0; i < 6; i++)
+    {
+        if (faceVector[i] >= greatest)
+        {
+            faceNumber = i;
+            uv = uvRange[i];
+        }
+    }
+
+    if (faceNumber == RIGHT_FACE)
+    {
+        return RightFace.Sample(BilinearTextureSampler, recenterUV(uv));
+    }
+    if (faceNumber == LEFT_FACE)
+    {
+        return LeftFace.Sample(BilinearTextureSampler, recenterUV(uv));
+    }
+    if (faceNumber == UP_FACE)
+    {
+        return UpFace.Sample(BilinearTextureSampler, recenterUV(uv));
+    }
+    if (faceNumber == DOWN_FACE)
+    {
+        return DownFace.Sample(BilinearTextureSampler, recenterUV(uv));
+    }
+    if (faceNumber == FRONT_FACE)
+    {
+        return FrontFace.Sample(BilinearTextureSampler, recenterUV(uv));
+    }
+    return BackFace.Sample(BilinearTextureSampler, recenterUV(uv));
+}
+
+
+half4 SampleCubePhiTheta(float2 phiTheta)
+{
+    return SampleCube(PhiThetaToVector(phiTheta.x, phiTheta.y));
+}
+
+// convert the uv on the current face
+// to a vector
+float3 uvToVector(int faceNumber, float2 uv) {
+    // remap to -1 / +1 range
+    float2 remapped = uv * 2. - 1.;
+    float zoomFactor = 1. / BleedPercent;
+    float3 vectors[6] = {
+        float3(zoomFactor, -remapped.x, -remapped.y),
+        float3(-zoomFactor, remapped.x, -remapped.y),
+        float3(remapped.x ,remapped.y , zoomFactor),
+        float3(remapped.x , -remapped.y, -zoomFactor),
+        float3(remapped.x , zoomFactor, -remapped.y),
+        float3(-remapped.x , -zoomFactor, -remapped.y),
+    };
+    return unitVector(vectors[faceNumber]);
+}
+
+////////////////////////
+
+float4 Sample(Texture2D Face, float2 uv)
+{
+    return Face.Sample(BilinearTextureSampler, uv);
+}
+
+float2 EquiUVToPhiTheta(float2 uv)
+{
+    float2 expanded = float2(uv.x, uv.y) * 2.f  - 1.f;
+    float2 phiTheta = float2(expanded.x, expanded.y) * float2(PI, PIH) + float2(PI, 0.);
+    // in equi projections phi is x, theta is y
+    return phiTheta;
+}
+
+float2 PhiThetaToEquiUV(float2 phiTheta)
+{
+    return float2(phiTheta.x / (2.f * PI), (phiTheta.y / PI) + .5f);
+}
+
+half4 SampleFromEquirectangular(Texture2D Source, float2 phiTheta)
+{
+    float2 uv = PhiThetaToEquiUV(phiTheta);
+    return Source.Sample(BilinearTextureSampler, uv);
+}
+
+half4 SampleEqui(float2 phiTheta)
+{
+    // haven't worked out yet why i have to move this around 1.5 PIs
+    float phi = fmod(phiTheta.x + 3 * PIH, TWOPI);
+    float theta = phiTheta.y;
+    float2 uv = PhiThetaToEquiUV(float2(phi, theta));
+    half4 mainSample = EquiTexture.Sample(
+        BilinearTextureSampler,
+        float2(uv.x, 1.-uv.y)
+    );
+    return mainSample;
+}
+
+
+float4 EquiSampleCube(float2 uv, float phiOffset)
+{
+    float2 phiTheta = EquiUVToPhiTheta(float2(1.f - uv.x, 1.f - uv.y)) + float2(phiOffset,0.);
+    return SampleCubePhiTheta(phiTheta);
+}
+
+
+half4 SampleEquirectangularWithBlur (Texture2D Source, float2 uv)
+{
+    float2 phiTheta = EquiUVToPhiTheta(uv);
+
+
+    half4 Dest = 0;
+    int SampleIndex;
+    for (SampleIndex = 0; SampleIndex < SampleCount - 1; SampleIndex += 2)
+    {
+
+        Dest += SampleFromEquirectangular(
+            Source,
+            HaversineDestination(
+                phiTheta,
+                (SampleOffsets[SampleIndex / 2].x + SampleOffsets[SampleIndex / 2].y) *  PI / 2,
+                BlurDirection.x * PI / 2
+            )
+        ) * SampleWeights[SampleIndex + 0];
+
+        Dest += SampleFromEquirectangular(
+            Source,
+            HaversineDestination(
+                phiTheta,
+                (SampleOffsets[SampleIndex / 2].z + SampleOffsets[SampleIndex / 2].w) *  PI / 2,
+                BlurDirection.x * PI / 2
+            )
+        ) * SampleWeights[SampleIndex + 1];
+    }
+
+    if(SampleIndex < SampleCount)
+    {
+            Dest += SampleFromEquirectangular(
+                Source,
+                HaversineDestination(
+                    phiTheta,
+                    (SampleOffsets[SampleIndex / 2].x + SampleOffsets[SampleIndex / 2].y) * PI / 2,
+                    BlurDirection.x * PI / 2
+                )
+            ) * SampleWeights[SampleIndex + 0];
+    }
+
+    return Dest;
+}
+
+// Combines the original cube face with the blurred bloom
+half4 AddSrc(Texture2D Original, int faceNumber,  float2 uv)
+{
+    half4 OriginalColour = Sample(Original, uv);
+    half3 outputColour = OriginalColour.rgb;
+    float3 vec = uvToVector(faceNumber, uv);
+    float2 phiTheta = VectorToPhiTheta(vec);
+    half3 equiSample = SampleEqui(phiTheta).rgb;
+    float colourPush = equiSample.r + equiSample.g + equiSample.b;
+    // perform "fake tonemapping" on the bloom output
+    float rgbMultiplier = smoothstep(0.0f, 2.f, colourPush) * (colourPush / 5.);
+    equiSample += half3(rgbMultiplier * 10., rgbMultiplier * 10., rgbMultiplier* 4.) * 0.2;
+    // perform easing of the bloom so the distribution of light and dark is less extreme
+	float bloomEaseMultiplier = 5.;
+	equiSample += equiSample * bloomEaseMultiplier * (cos((equiSample / 100) * PI) / 2 + 0.5);
+	// Multiply intensity to make it more inline with ue4's behaviour
+    float bloomIntensityMultiplyer = 1.325f;
+	return half4(clamp(outputColour, 0., 30.) + (equiSample * BloomIntensity * bloomIntensityMultiplyer), OriginalColour.a);
+}
+
+float2 OverscanCompensation(float2 uv)
+{
+    // This corresponds to the 1% overscan applied BEFORE bleed percent
+    // This percent ensures that there are no artefacts when applying
+    // Motion Blur
+    float OverscanIncrease = 1.01;
+    return (uv / OverscanIncrease) + (1. - (1./OverscanIncrease)) / 2.;
+}
+
+////////////// PIXEL SHADERS
+
+// Sample the point on an equirectangular plane
+// then threshold
+void HighestBrightnessThresholdPS(
+    in float2 uv : TEXCOORD0,
+    // Thresholded equirectangular output
+    out float4 OutEqui : SV_Target0
+)
+{
+    half4 SceneColor = EquiSampleCube(uv, 0);
+    // clamp to avoid artifacts from exceeding fp16 through framebuffer blending of multiple very bright lights
+    SceneColor.rgb = min(float3(256 * 256, 256 * 256, 256 * 256), SceneColor.rgb);
+    half3 LinearColor = SceneColor.rgb;
+    // todo: make this adjustable (e.g. LUT)
+    half TotalLuminance = dot(LinearColor, half3(0.3, 0.59, 0.11));
+    half BloomLuminance = TotalLuminance - max(BloomThreshold, 0);
+    // mask 0..1
+    half BloomAmount = saturate(BloomLuminance / 2.0f);
+    OutEqui = half4(BloomAmount * LinearColor, 0);
+}
+
+void DownSamplePS(
+    in float2 uv : TEXCOORD0,
+    // equirectangular output
+    out float4 OutEqui : SV_Target0
+)
+{
+    OutEqui = Sample(EquiTexture, uv);
+}
+
+void BlurPS(
+    in float2 uv : TEXCOORD0,
+    // equirectangular output
+    out float4 OutEqui : SV_Target0
+)
+{
+    half3 Equi = SampleEquirectangularWithBlur(EquiTexture, uv).rgb;
+
+    #if NEEDS_ADDITIVE
+        OutEqui = half4(Equi + Sample(VerticalOnlyEquiTexture, uv).rgb, 1);
+    #else
+        OutEqui = half4(Equi, 1);
+    #endif
+}
+
+
+void AdditiveBlendPS(
+    in float2 uv : TEXCOORD0,
+    out float4 OutColorRight : SV_Target0,
+    out float4 OutColorLeft : SV_Target1,
+    out float4 OutColorUp : SV_Target2,
+    out float4 OutColorDown : SV_Target3,
+    out float4 OutColorFront : SV_Target4,
+    out float4 OutColorBack : SV_Target5
+)
+{
+    OutColorRight = AddSrc(RightOriginal, RIGHT_FACE, uv);
+    OutColorLeft = AddSrc(LeftOriginal, LEFT_FACE, uv);
+    OutColorUp = AddSrc(UpOriginal, UP_FACE, uv);
+    OutColorDown = AddSrc(DownOriginal, DOWN_FACE, uv);
+    OutColorFront = AddSrc(FrontOriginal, FRONT_FACE, uv);
+    OutColorBack = AddSrc(BackOriginal, BACK_FACE, uv);
+}
+
+void CubeToEquiPS(
+    in float2 uv : TEXCOORD0,
+	out float4 OutColor : SV_Target0
+)
+{
+    OutColor = EquiSampleCube(uv, 1.5 * PI);
+    if (InvertAlpha)
+    {
+        OutColor.a = 1.0 - OutColor.a;
+    }
+}
+
+void CubeMapOutputPS(
+    in float2 uv : TEXCOORD0,
+	out float4 OutColor : SV_Target0
+)
+{
+    if (uv.x <= THIRD)
+    {
+        if (uv.y <= 0.5)
+        {
+            OutColor = RightFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2(uv.x * 3., uv.y * 2.))
+            );
+        }
+        else
+        {
+            OutColor = DownFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2(uv.x * 3., (uv.y - 0.5) * 2.))
+            );
+        }
+    }
+    else if (uv.x <= 2 * THIRD)
+    {
+        if (uv.y <= 0.5)
+        {
+            OutColor = LeftFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2((uv.x - THIRD) * 3., uv.y * 2.))
+            );
+        }
+        else
+        {
+            OutColor = FrontFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2((uv.x - THIRD) * 3., (uv.y - 0.5) * 2.))
+            );
+        }
+    }
+    else
+    {
+        if (uv.y <= 0.5)
+        {
+            OutColor = UpFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2((uv.x - 2. * THIRD) * 3., uv.y * 2.))
+            );
+        }
+        else
+        {
+            OutColor = BackFace.Sample(
+                BilinearTextureSampler,
+                OverscanCompensation(float2((uv.x - 2. * THIRD) * 3.,(uv.y - 0.5) * 2.))
+            );
+        }
+    }
+
+    if (InvertAlpha)
+    {
+        OutColor.a = (1.0 - OutColor.a);
+    }
+}
+
+void DomeMasterOutputPS(
+    in float2 uv : TEXCOORD0,
+	out float4 OutColor : SV_Target0
+)
+{
+    float2 xy = 2.0f * uv - 1.0f;
+    float radius = sqrt(dot(xy, xy));
+    float phi    = radius * PI * Angle;
+    float theta  = atan2(xy.y, xy.x);
+    float projxy = sin(phi);
+
+    float3 v = float3(cos(theta), sin(theta), cos(phi)) * float3(projxy, projxy, 1);
+    v = mul(DomeRotMat, v);
+
+    float4 color = SampleCube(v);
+
+    OutColor = radius <= 1.0 ? color : 0;
+
+    if (InvertAlpha)
+    {
+        OutColor.a = (1.0 - OutColor.a);
+    }
+}
+float rayTraceSphere(float3 rayOrigin, float3 rayDirection, float3 centre,float radius, inout float3 intersection, inout float3 normal)
+{
+    radius = radius * radius;
+	float dt = dot(rayDirection, centre - rayOrigin);
+	if (dt < 0.0) {
+		return dt;
+	}
+	float3 tmp = rayOrigin - centre;
+	tmp.x = dot(tmp, tmp);
+	tmp.x = tmp.x - dt*dt;
+	if (tmp.x >= radius) {
+		return -1.0;
+	}
+	dt = dt - sqrt(radius - tmp.x);
+	intersection = rayOrigin + rayDirection * dt;
+	normal = normalize(intersection - centre);
+	return dt;
+}
+
+float4 sampleMirrorDomeReflected(float2 uv)
+{
+    const float3 reflectingSphereCenter = float3(0.0, 0.0, 1.0);
+    const float cameraLocation = 0.2;
+    const float reflectingSphereRadius = 0.1;
+    float3 intersectionPoint;
+    float3 mirrorNormal;
+    float3 rayOrigin = MD_RayOffset + float3(0, 0, 1- cameraLocation);
+    float2 resizedUv = uv * reflectingSphereRadius;
+    float3x3 rayRotation = float3x3(
+        MD_RayForward,
+        MD_RayRight,
+        MD_RayUp
+        );
+    float3 rayDirection = mul(rayRotation, normalize(float3(-resizedUv.x, resizedUv.y , MD_FocalLength / 10)));
+    // two spheres to calculate intersection.
+    // 1. intersect with mirror sphere
+    float t = rayTraceSphere(
+        rayOrigin,
+        rayDirection,
+       reflectingSphereCenter,
+       reflectingSphereRadius,
+       intersectionPoint,
+       mirrorNormal);
+
+    // calculate ray reflection
+    const float3 mainSphereCenter = float3(0,0,0);
+    const float sphereRadius = 1.0;
+    float3 reflection = 2.0 * dot(mirrorNormal, rayDirection) * mirrorNormal - rayDirection;
+
+    float3 mainDomeIntersection;
+    float3 mainDomeNormal;
+
+    float t2 = rayTraceSphere(
+        intersectionPoint,
+        reflection,
+        mainSphereCenter,
+        sphereRadius,
+        mainDomeIntersection,
+        mainDomeNormal);
+    float4 sampledColour = SampleCube(mul(DomeRotMat, mainDomeNormal));
+    sampledColour.w = 1.0;
+    return smoothstep(-0.5, 0.001, t) * sampledColour;
+}
+
+void MirrorDomeOutputPS(
+    in float2 uv : TEXCOORD0,
+	out float4 OutColor : SV_Target0
+)
+{
+    float2 remappedUV;
+
+    remappedUV.x = (2 * (1.- uv.x) - 1.f) / MD_PixelAspectRatio;
+    remappedUV.y = (1. - uv.y);
+    OutColor = sampleMirrorDomeReflected(remappedUV);
+    if (InvertAlpha)
+    {
+        OutColor.w = 1.0 - OutColor.w;
+    }
+}

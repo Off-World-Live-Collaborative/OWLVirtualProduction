@@ -1,0 +1,16 @@
+name: Feature Request
+description: Suggest a feature for us to work on
+labels: [Feature Request, Needs Triage]
+body:
+  - type: textarea
+    id: detailedfeature
+    attributes:
+      label: Describe your feature in detail ie where it would be added
+    validations:
+      required: true
+  - type: textarea
+    id: justification
+    attributes:
+      label: Why would this feature be relevant to other users?
+    validations:
+      required: true

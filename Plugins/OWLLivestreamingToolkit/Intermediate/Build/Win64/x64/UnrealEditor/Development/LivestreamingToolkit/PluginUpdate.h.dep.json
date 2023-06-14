@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\livestreamingtoolkit\\private\\serverauth\\pluginupdate.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\unrealed\\sharedpch.unrealed.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livestreamingtoolkit\\definitions.livestreamingtoolkit.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\online\\http\\public\\interfaces\\ihttprequest.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\online\\http\\public\\interfaces\\ihttpbase.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\dom\\jsonobject.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\dom\\jsonvalue.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\serialization\\jsontypes.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\json\\public\\jsonglobals.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

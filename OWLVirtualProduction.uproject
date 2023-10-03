@@ -54,6 +54,10 @@
 		{
 			"Name": "HardwareEncoders",
 			"Enabled": true
+		},
+		{
+			"Name": "BinkMedia",
+			"Enabled": true
 		}
 	]
 }

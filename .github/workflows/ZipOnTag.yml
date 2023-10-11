@@ -32,8 +32,7 @@ jobs:
       - name: Setup S3Cmd cli tool
         uses: s3-actions/s3cmd@v1.5.0
         with:
-          provider: aws # default is linode
-          region: 'eu-central-1'
+          provider: cloudflare
           access_key: ${{ secrets.S3_ACCESS_KEY }}
           secret_key: ${{ secrets.S3_SECRET_KEY }}
       - name: Upload to Cloudflare R2

@@ -33,6 +33,7 @@ jobs:
         uses: s3-actions/s3cmd@v1.5.0
         with:
           provider: cloudflare
+          account_id: ${{ secrets.CF_ACCOUNT_ID }}
           access_key: ${{ secrets.S3_ACCESS_KEY }}
           secret_key: ${{ secrets.S3_SECRET_KEY }}
       - name: Upload to Cloudflare R2

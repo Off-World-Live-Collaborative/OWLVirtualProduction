@@ -54,6 +54,10 @@
 		{
 			"Name": "HardwareEncoders",
 			"Enabled": true
+		},
+		{
+			"Name": "Text3D",
+			"Enabled": true
 		}
 	]
 }

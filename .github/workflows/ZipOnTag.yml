@@ -29,20 +29,17 @@ jobs:
           echo "zip_file_name=$ZIP_FILE_NAME" >> $GITHUB_ENV
           echo "zip_file_path=$ZIP_FILE_PATH" >> $GITHUB_ENV
 
-      - name: Upload to AWS S3
-        uses: hkusu/s3-upload-action@v2
-        id: upload_s3
+      - name: Setup S3Cmd cli tool
+        uses: s3-actions/s3cmd@v1.5.0
         with:
-          aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
-          aws-bucket: ${{ secrets.AWS_BUCKET }}
-          bucket-root: /
-          destination-dir: vp-studio
-          file-path: ${{ env.zip_file_path }}
-          public: true
-          output-file-url: true
-
+          provider: cloudflare
+          account_id: ${{ secrets.CF_ACCOUNT_ID }}
+          access_key: ${{ secrets.S3_ACCESS_KEY }}
+          secret_key: ${{ secrets.S3_SECRET_KEY }}
+      - name: Upload to Cloudflare R2
+        run: |
+          s3cmd put ${{ env.zip_file_path }} --acl-public --mime-type 'application/x-zip' s3://owl-projects/vp-studio/${{ env.zip_file_name }}
+        
       - name: Create release with link to file
         uses: ncipollo/release-action@v1
         with:
@@ -53,4 +50,4 @@ jobs:
 
             ## Download
 
-            Instead, download here [${{ env.zip_file_name }}](https://${{ secrets.AWS_BUCKET }}.s3.amazonaws.com/vp-studio/${{ env.zip_file_name}})
+            Instead, download here [${{ env.zip_file_name }}](https://projects.offworld.live/vp-studio/${{ env.zip_file_name}})

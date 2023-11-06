@@ -1,0 +1,29 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\owlndi\\public\\owlndisendercontroller.h",
+        "ProvidedModule": "",
+        "PCH": "c:\\toolkit-tmp\\intermediate\\build\\win64\\x64\\buildtempeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\owlndi\\definitions.owlndi.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\source\\owlndi\\public\\ndienums.h",
+            "c:\\toolkit-tmp\\plugins\\owllivestreamingtoolkit\\intermediate\\build\\win64\\unrealeditor\\inc\\owlndi\\uht\\ndienums.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\sound\\soundsubmix.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\audioextensions\\public\\iaudioendpoint.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\multithreadedpatching.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\audioextensions\\uht\\iaudioendpoint.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\audioextensions\\public\\isoundfieldendpoint.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\audioextensions\\uht\\isoundfieldendpoint.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\sound\\samplebufferio.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\signalprocessing\\public\\samplebuffer.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\sound\\soundeffectsubmix.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\soundeffectsubmix.generated.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\spectrumanalyzer.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\audiofft.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\fftalgorithm.h",
+            "c:\\program files\\epic games\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\soundsubmix.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
